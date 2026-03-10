@@ -38,7 +38,8 @@ jobs:
           ARCH: ${{ matrix.arch }}
           FEEDNAME: mtspkgs
           INDEX: 1
-          KEY_BUILD: ${{ secrets.REPO_KEY }}
+          NO_DEFAULT_FEEDS: 1
+          PRIVATE_KEY: ${{ secrets.REPO_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -62,7 +63,7 @@ jobs:
         run: |
           mkdir -p ./pages_root
           cp -a ./pages_data/packages-*/* ./pages_root/
-          cp mtspkgs_key.pub ./pages_root/
+          cp mtspkgs-key.pub ./pages_root/
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
