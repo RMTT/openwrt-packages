@@ -1,0 +1,82 @@
+name: Build Packages
+
+on:
+  push:
+    branches:
+      - main
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build OpenWrt Packages - ${{ matrix.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch:
+          - aarch64_generic
+          - aarch64_cortex-a53
+          - x86_64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Build Packages
+        uses: openwrt/gh-action-sdk@main
+        env:
+          ARCH: ${{ matrix.arch }}
+          FEEDNAME: mtspkgs
+          INDEX: 1
+          KEY_BUILD: ${{ secrets.REPO_KEY }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ matrix.arch }}
+          path: ./bin/
+
+  prepare_pages:
+    name: Prepare Pages
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./pages_data
+
+      - name: Restructure and add key
+        run: |
+          mkdir -p ./pages_root
+          cp -a ./pages_data/packages-*/* ./pages_root/
+          cp mtspkgs_key.pub ./pages_root/
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./pages_root/
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: prepare_pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
