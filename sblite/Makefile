@@ -6,14 +6,15 @@ PKG_RELEASE:=1
 
 ifeq ($(ARCH),x86_64)
   RELEASE_ARCH:=amd64
+  PKG_HASH:=c7c0e7b5bc8440fa6465c0b716cbc4aeffdb13ae13c1b71ab643ea8d083f8024
 endif
 ifeq ($(ARCH),aarch64)
   RELEASE_ARCH:=arm64
+  PKG_HASH:=4909ece2fe6c6ca47a5d81732ae5452db3fab83a526d82934ae6de6a971f8ef4
 endif
 
 PKG_SOURCE:=$(PKG_NAME)-$(RELEASE_ARCH)-linux.tar.gz
 PKG_SOURCE_URL:=https://github.com/RMTT/sb-lite/releases/download/v$(PKG_VERSION)/
-PKG_HASH:=skip
 
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=RMTT
