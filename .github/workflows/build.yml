@@ -24,7 +24,6 @@ jobs:
       matrix:
         arch:
           - aarch64_generic
-          - aarch64_cortex-a53
           - x86_64
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +39,7 @@ jobs:
           INDEX: 1
           NO_DEFAULT_FEEDS: 1
           PRIVATE_KEY: ${{ secrets.REPO_KEY }}
-          PACKAGES: udp2raw
+          PACKAGES: udp2raw sblite
           V: sc
 
       - name: Upload artifact
