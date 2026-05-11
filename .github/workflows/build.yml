@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: packages-${{ matrix.arch }}
-          path: ./bin/
+          path: ./bin/packages
 
   prepare_pages:
     name: Prepare Pages
