@@ -31,6 +31,11 @@ endef
 define Package/$(PKG_NAME)/description
   sb-lite proxy tool, repackaged from GitHub pre-compiled releases into an OpenWrt apk.
 endef
+
+define Package/$(PKG_NAME)/conffiles
+/etc/sblite/
+endef
+
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
 	tar -xzvf $(DL_DIR)/$(PKG_SOURCE) -C $(PKG_BUILD_DIR)
