@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         arch:
-          - aarch64_generic
+          - aarch64_cortex-a53
           - x86_64
     steps:
       - uses: actions/checkout@v4
@@ -62,8 +62,8 @@ jobs:
 
       - name: Restructure and add key
         run: |
-          mkdir -p ./pages_root
-          cp -a ./pages_data/packages-*/* ./pages_root/
+          mkdir -p ./pages_root/packages
+          cp -a ./pages_data/packages-*/* ./pages_root/packages
           cp mtspkgs-key.pub ./pages_root/
 
       - name: Upload pages artifact
