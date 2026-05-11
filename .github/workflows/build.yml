@@ -39,7 +39,7 @@ jobs:
           INDEX: 1
           NO_DEFAULT_FEEDS: 1
           PRIVATE_KEY: ${{ secrets.REPO_KEY }}
-          PACKAGES: udp2raw sblite
+          PACKAGES: sblite
           V: sc
 
       - name: Upload artifact
